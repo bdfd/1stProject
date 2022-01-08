@@ -1,0 +1,2 @@
+!INCLUDE "foo.mdpp"
+!INCLUDE "bar.mdpp"
