@@ -21,4 +21,4 @@ jobs:
    - run: npm ci
    - run: npm run scrape --if-present
      env:
-      ENV_GITHUB_TOKEN: ${{ secrets.ENDORSE_TOKEN }}
+      ENV_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
