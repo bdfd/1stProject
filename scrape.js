@@ -5,8 +5,8 @@ const { Octokit } = require('@octokit/rest');
 // const { ReadmeBox } = require('readme-box')
 
 const REPO_DETAILS = {
-	owner: process.env.GITHUB_REPOSITORY_OWNER,
-	repo: process.env.GITHUB_REPOSITORY_OWNER,
+	owner: process.env.CI_REPOSITORY_OWNER,
+	repo: process.env.CI_REPOSITORY_OWNER,
 };
 
 const START_COMMENT = '<!--START_SECTION:endorsements-->';
@@ -54,9 +54,16 @@ function generateStuffInsideFences(data) {
 	const renderedList = data
 		.map(
 			(x) =>
-				`<li><a href="${x.url}">${x.title}</a>: ${x.reactions
+				`<li><a href="${x.url}">${x.title
+					.replace(/<style[^>]*>.*<\/style>/gm, '')
+					// Remove script tags and content
+					.replace(/<script[^>]*>.*<\/script>/gm, '')
+					// Remove all opening, closing and orphan HTML tags
+					.replace(/<[^>]+>/gm, '')
+					// Remove leading spaces and repeated CR/LF
+					.replace(/([\r\n]+ +)+/gm, '')}</a>: ${x.reactions
 					.map(
-						(reaction) => `<img src=${reaction.user.avatar_url}&s=20 />` // use github image api s=20 to size smaller
+						(reaction) => `<img src=${reaction.user.avatar_url}&s=20 height=20 />` // use github image api s=20 to size smaller
 					)
 					.join('')}</li>`
 		)
